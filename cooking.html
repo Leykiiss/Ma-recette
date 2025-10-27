@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma recette</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+  // Configuration Supabase - À COMPLÉTER AVEC VOS CLÉS
+        const supabaseUrl = 'VOTRE_URL_SUPABASE';
+        const supabaseKey = 'VOTRE_CLE_ANON';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+    </script>
+</head>
+<body>
+
+    <div class="bar">  <!--bar du haut blanc-->
+        <h1>Ma recette</h1>
+        <img src="img/bars.png" alt="bars">
+    </div>
+
+    <div class="search">
+        <input type="text" id="barre-recherche" placeholder="quel recette cherchez vous..?">
+        <img src="img/loupe.webp" alt="loupe">
+    </div>
+
+    <div class="conteneur">
+        <div class="ptit-carre-bleu"></div>
+
+        <div class="cards-container">
+            <a href="recette.html?id=crepes" class="card">
+                <div class="img-container">
+                    <img src="img/crepe.webp" alt="crepe">
+                </div>
+                <div class="text-container">
+                    <h2>Crepes</h2>
+                    <h3>une envie de crepe ? clique ici </h3>
+                </div>
+            </a>
+        
+  
+            <a href="recette.html?id=muffins" class="card">
+                <div class="img-container">
+                    <img src="img/muffins.jpeg" alt="muffins">
+                </div>
+                <div class="text-container">
+                    <h2>Muffins</h2>
+                    <h3>une envie de muffin ? clique ici</h3>
+                </div>
+            </a>
+
+
+        
+            <a href="recette.html?id=gauffres" class="card">
+                <div class="img-container">
+                    <img src="img/gauffres.webp" alt="gauffres">
+                </div>
+                <div class="text-container">
+                    <h2>Gauffres</h2>
+                    <h3>une envie de gauffres ? clique ici</h3>
+                </div>
+            </a>
+
+
+
+            <a href="recette.html?id=muffins" class="card">
+                <div class="img-container">
+                    <img src="img/muffins.jpeg" alt="muffins">
+                </div>
+                <div class="text-container">
+                    <h2>Muffins</h2>
+                    <h3>une envie de muffin ? clique ici</h3>
+                </div>
+            </a>
+
+
+
+            <a href="recette.html?id=muffins" class="card">
+                <div class="img-container">
+                    <img src="img/muffins.jpeg" alt="muffins">
+                </div>
+                <div class="text-container">
+                    <h2>Muffins</h2>
+                    <h3>une envie de muffin ? clique ici</h3>
+                </div>
+            </a>
+
+
+
+        <a href="recette.html?id=muffins" class="card">
+                <div class="img-container">
+                    <img src="img/muffins.jpeg" alt="muffins">
+                </div>
+                <div class="text-container">
+                    <h2>Muffins</h2>
+                    <h3>une envie de muffin ? clique ici</h3>
+                </div>
+            </a>
+        
+            <a href="recette.html?id=muffins" class="card">
+                <div class="img-container">
+                    <img src="img/muffins.jpeg" alt="muffins">
+                </div>
+                <div class="text-container">
+                    <h2>Muffins</h2>
+                    <h3>une envie de muffin ? clique ici</h3>
+                </div>
+            </a>
+        
+            <a href="recette.html?id=muffins" class="card">
+                <div class="img-container">
+                    <img src="img/muffins.jpeg" alt="muffins">
+                </div>
+                <div class="text-container">
+                    <h2>Muffins</h2>
+                    <h3>une envie de muffin ? clique ici</h3>
+                </div>
+            </a>
+
+
+        </div>
+    </div>
+    <div class="pagination-container">
+        <div class="pagination" id="pagination"> 
+        </div>
+    </div>
+
+    <button class="boutton-ajout">+</button>
+
+    <script src="pagination.js"></script>
+    <script src="ajout-recette.js"></script>
+
+    <div class="formulaire-overlay">
+        <div class="formulaire-recette">
+            <button class="fermer-formulaire" onclick="fermerFormulaire()">×</button>
+            <h2> Nouvelle Recette</h2>
+            <input type="text" id="nouveauTitre" placeholder="Titre de la recette">
+            <textarea id="nouveauxIngredients" placeholder="Ingrédients (un par ligne)"></textarea>
+            <textarea id="nouvellePreparation" placeholder="Préparation"></textarea>
+            <textarea id="nouvelleCuisson" placeholder="Cuisson"></textarea>
+            <input type="file" id="nouvelleImage" accept="image/*">
+            <button onclick="ajouterRecette()"> Créer la recette</button>
+        </div>
+    </div>
+   
+    <script src="recherche.js"></script>
+
+</body>
+</html>

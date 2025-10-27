@@ -1,0 +1,98 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+    background-color: #91C6D9;
+}
+
+.conteneur {
+    width: 90%;
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 50px 0;
+}
+
+.fond {
+    position: relative;
+    width: 100%;
+    height: auto;
+    background-color: #73ADC2;
+    border-radius: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+    border: none;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    overflow: visible;
+    padding-bottom: 50px;
+}
+
+
+.ligne-haut {
+
+    width: 1000px;
+    height: 4px;
+    background-color: #FFFF;
+    position: absolute;
+    top: 120px;
+    left: 50%;
+    border-radius: 30px;
+    transform: translate(-50%);
+}
+
+
+.ingredient-title{
+    color: white;
+    margin-left: 50px;
+    margin-top: 130px;
+
+}
+
+.preparation-title{
+    color: white;
+    margin-left: 50px;
+    margin-top: 100px;
+
+}
+
+.cuisson-title{
+    color: white;
+    margin-left: 50px;
+    margin-top: 100px;
+
+}
+
+
+#ingredients {
+    color:white;
+    margin-left: 65px;
+    margin-top: 25px;
+    font-size: 20px;
+    
+}
+
+#titre {
+    color: white;
+    text-align: center;
+    font-size: 50px;
+    margin-top: 10px;
+}
+
+#preparation {
+    color: white;
+    margin-left: 50px;
+    font-size: 20px;
+    margin-top: 25px;
+    list-style-type: disc;
+}
+
+#cuisson {
+    color: white;
+    margin-left: 50px;
+    font-size: 20px;
+    margin-top: 25px;
+    list-style-type: disc;
+}
