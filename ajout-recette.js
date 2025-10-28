@@ -18,6 +18,12 @@ function resetFormulaire() {
 
 // ===== AJOUT D'UNE RECETTE AVEC SUPABASE =====
 async function ajouterRecette() {
+    // Vérifier que supabase est disponible
+    if (typeof window.supabase === 'undefined') {
+        alert('Supabase non configuré. Vérifiez vos clés.');
+        return;
+    }
+
     const titre = document.getElementById('nouveauTitre').value;
     const ingredients = document.getElementById('nouveauxIngredients').value.split('\n').filter(i => i.trim() !== '');
     const preparation = document.getElementById('nouvellePreparation').value || '/';
@@ -37,14 +43,14 @@ async function ajouterRecette() {
             const fileName = `${Date.now()}_${imageFile.name}`;
             
             // Upload l'image vers Supabase Storage
-            const { data: uploadData, error: uploadError } = await supabase.storage
+            const { data: uploadData, error: uploadError } = await window.supabase.storage
                 .from('recettes-images')
                 .upload(fileName, imageFile);
 
             if (uploadError) throw uploadError;
 
             // Récupère l'URL publique de l'image
-            const { data: urlData } = supabase.storage
+            const { data: urlData } = window.supabase.storage
                 .from('recettes-images')
                 .getPublicUrl(fileName);
 
@@ -52,7 +58,7 @@ async function ajouterRecette() {
         }
 
         // Ajoute la recette à la base de données
-        const { data, error } = await supabase
+        const { data, error } = await window.supabase
             .from('recettes')
             .insert([
                 {
@@ -74,15 +80,20 @@ async function ajouterRecette() {
         alert('Recette créée ! 🎉');
 
     } catch (error) {
-        console.error('Erreur:', error);
-        alert('Erreur lors de la création de la recette');
+        console.error('Erreur Supabase:', error);
+        alert('Erreur lors de la création de la recette: ' + error.message);
     }
 }
 
 // ===== AFFICHER LES RECETTES =====
 async function chargerEtAfficherRecettes() {
     try {
-        const { data: recettes, error } = await supabase
+        if (typeof window.supabase === 'undefined') {
+            console.log('Supabase non configuré');
+            return;
+        }
+
+        const { data: recettes, error } = await window.supabase
             .from('recettes')
             .select('*')
             .order('created_at', { ascending: false });
