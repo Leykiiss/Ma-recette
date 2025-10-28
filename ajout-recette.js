@@ -88,25 +88,28 @@ async function ajouterRecette() {
 // ===== AFFICHER LES RECETTES =====
 async function chargerEtAfficherRecettes() {
     try {
-        if (typeof window.supabase === 'undefined') {
-            console.log('Supabase non configuré');
-            return;
-        }
-
-        const { data: recettes, error } = await window.supabase
-            .from('recettes')
-            .select('*')
-            .order('created_at', { ascending: false });
-
-        if (error) throw error;
-
-        // Affiche toutes les recettes
+        // GARDE les recettes existantes en HTML
         const cardsContainer = document.querySelector('.cards-container');
-        cardsContainer.innerHTML = ''; // Vide le conteneur
+        
+        // Si Supabase est configuré, charge les recettes supplémentaires
+        if (typeof window.supabase !== 'undefined') {
+            const { data: recettesSupabase, error } = await window.supabase
+                .from('recettes')
+                .select('*')
+                .order('created_at', { ascending: false });
 
-        recettes.forEach(recette => {
-            creerCardRecette(recette);
-        });
+            if (!error && recettesSupabase) {
+                // Ajoute seulement les Nouvelles recettes (pas celles déjà dans le HTML)
+                recettesSupabase.forEach(recette => {
+                    // Vérifie si la recette existe déjà
+                    const existeDeja = document.querySelector(`[href="recette.html?id=${recette.id}"]`);
+                    if (!existeDeja) {
+                        creerCardRecette(recette);
+                    }
+                });
+            }
+        }
+        // Les recettes de base dans le HTML restent intactes !
 
     } catch (error) {
         console.error('Erreur:', error);
