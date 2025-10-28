@@ -28,6 +28,8 @@ async function chargerRecette() {
     const params = new URLSearchParams(window.location.search);
     const recetteId = params.get('id');
 
+    console.log("🔍 ID recherché:", recetteId);
+
     if (!recetteId) {
         console.log("Aucun ID de recette fourni");
         return;
@@ -36,38 +38,88 @@ async function chargerRecette() {
     // 1. D'abord chercher dans les recettes de base
     const recetteBase = recettesBase.find(r => r.id === recetteId);
     if (recetteBase) {
+        console.log("✅ Trouvée dans base locale");
         afficherRecette(recetteBase);
         return;
     }
 
-    // 2. Ensuite chercher dans Supabase (si configuré)
+    // 2. Ensuite chercher dans Supabase
     try {
         if (typeof window.supabase !== 'undefined') {
+            console.log("🔍 Recherche dans Supabase pour ID:", recetteId);
+            
+            // TEST : Vérifier d'abord s'il y a des recettes
+            const { data: toutesRecettes, error: errorAll } = await window.supabase
+                .from('recettes')
+                .select('*');
+            
+            console.log("📋 Toutes les recettes dans Supabase:", toutesRecettes);
+            
+            // Recherche spécifique - PREMIÈRE TENTATIVE
             const { data: recette, error } = await window.supabase
                 .from('recettes')
                 .select('*')
                 .eq('id', recetteId)
                 .single();
 
-            if (!error && recette) {
+            console.log("Réponse Supabase (1ère tentative):", { data: recette, error: error });
+
+            if (error) {
+                console.error("❌ Erreur Supabase détaillée:", error);
+                
+                // DEUXIÈME TENTATIVE - sans .single()
+                const { data: recettes, error: errorMultiple } = await window.supabase
+                    .from('recettes')
+                    .select('*')
+                    .eq('id', recetteId);
+
+                console.log("Réponse Supabase (2ème tentative):", { data: recettes, error: errorMultiple });
+                
+                if (!errorMultiple && recettes && recettes.length > 0) {
+                    console.log("✅ Recette trouvée (2ème tentative):", recettes[0]);
+                    afficherRecette(recettes[0]);
+                    return;
+                }
+            } 
+            
+            if (recette) {
+                console.log("✅ Recette trouvée dans Supabase:", recette);
                 afficherRecette(recette);
                 return;
+            } else {
+                console.log("❌ Aucune recette trouvée avec cet ID");
             }
+        } else {
+            console.log("❌ Supabase non configuré");
         }
     } catch (error) {
-        console.log('Supabase non configuré ou erreur');
+        console.error('💥 Erreur générale:', error);
     }
 
-    // 3. Si aucune recette trouvée
-    console.log("Recette non trouvée");
+    console.log("❌ Recette non trouvée");
 }
 
 // ===== FONCTION POUR AFFICHER LA RECETTE =====
 function afficherRecette(recette) {
-    document.getElementById("titre").innerText = recette.titre;
-    document.getElementById("ingredients").innerHTML = recette.ingredients.map(i => `<li>${i}</li>`).join('');
-    document.getElementById("preparation").innerText = "• " + recette.preparation;
-    document.getElementById("cuisson").innerText = "• " + recette.cuisson;
+    console.log("📝 Affichage de la recette:", recette);
+    
+    // Titre
+    document.getElementById("titre").innerText = recette.titre || "Titre manquant";
+    
+    // Ingrédients (gère les tableaux ET les strings)
+    let ingredientsArray = [];
+    if (Array.isArray(recette.ingredients)) {
+        ingredientsArray = recette.ingredients;
+    } else if (typeof recette.ingredients === 'string') {
+        ingredientsArray = recette.ingredients.split('\n').filter(i => i.trim() !== '');
+    } else {
+        console.warn("Format d'ingrédients inattendu:", recette.ingredients);
+    }
+    document.getElementById("ingredients").innerHTML = ingredientsArray.map(i => `<li>${i}</li>`).join('');
+    
+    // Préparation et cuisson
+    document.getElementById("preparation").innerText = "• " + (recette.preparation || "/");
+    document.getElementById("cuisson").innerText = "• " + (recette.cuisson || "/");
 }
 
 // ===== DÉMARRAGE =====
