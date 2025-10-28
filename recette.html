@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>recette en question lol</title>
     <link rel="stylesheet" href="recette.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const supabaseUrl = 'https://hkqwsedifepdmhexvatt.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhrcXdzZWRpZmVwZG1oZXh2YXR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE0ODkxMTUsImV4cCI6MjA3NzA2NTExNX0.u1VQmTVgEiotnKeG0QIZGNmaPaDnlinuJ15BbZ-xbcg';
+        window.supabase = supabase.createClient(supabaseUrl, supabaseKey);
+    </script>
 </head>
 <body>
     <div class="conteneur">
