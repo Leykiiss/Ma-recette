@@ -42,8 +42,8 @@ async function chargerRecette() {
 
     // 2. Ensuite chercher dans Supabase (si configuré)
     try {
-        if (typeof supabase !== 'undefined') {
-            const { data: recette, error } = await supabase
+        if (typeof window.supabase !== 'undefined') {
+            const { data: recette, error } = await window.supabase
                 .from('recettes')
                 .select('*')
                 .eq('id', recetteId)
